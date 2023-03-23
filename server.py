@@ -4,7 +4,7 @@ from player import Player
 
 import pickle
 
-server = "148.201.210.63"  #ITESO
+server = "148.201.50.17" #ITESO
 port = 5555
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -21,9 +21,10 @@ s.listen(2)
 print("Waiting for connection. Server started")
 
 
-players = [Player(0,0,50,50,(255,0,0)), Player(100,100,50,50,(0,0,255))]
+players = [Player(50,500,50,50,(255,0,0)), Player(900,500,50,50,(0,0,255))]
 
 def threaded_client(conn, player):
+    ''' Crea la conexion entre el cliente y el servidor '''
     print(player)
     conn.send(pickle.dumps(players[player]))
     reply = ""
