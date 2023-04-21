@@ -1,14 +1,19 @@
 import socket
 from _thread import *
 from player import Player 
-
+import  yaml
 import pickle
 
-server = "148.201.50.17" #ITESO
-port = 5555
+with open('config.yml', 'r') as f:
+    config = yaml.safe_load(f)
+
+path = config['path']
+server = config['ip']
+port = config['port']
+
+print(str(path) + " " + str(server) + " " + str(port))
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-
 
 try:
     s.bind((server, port))

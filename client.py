@@ -1,10 +1,12 @@
 from __future__ import annotations
+from typing import Any
 import pygame
 from pygame import mixer
 from network import Network
 from player import Player
 from pymunk import Body, Space, Circle, Poly
 from pymunk.pygame_util import DrawOptions
+import yaml
 
 
 class HeadSoccer:
@@ -15,8 +17,15 @@ class HeadSoccer:
     GRAVITY_X:int = 0
     GRAVITY_Y:int = 981
     FPS:int = 60
+    config: Any
+    path: str
+    
 
     def __init__(self):
+        with open('config.yml', 'r') as f:
+            self.config = yaml.safe_load(f)
+            self.path = self.config['path']
+
         self.window = pygame.display.set_mode((HeadSoccer.WIDTH, HeadSoccer.HEIGHT))
         pygame.display.set_caption("HeadSoccer")
         self.space = Space()
@@ -24,10 +33,10 @@ class HeadSoccer:
         self.draw_options:DrawOptions = DrawOptions(self.window)
         
         self.ball = self.create_ball(self.space, HeadSoccer.BALL_RADIUS, 10)
-        self.image = pygame.image.load("/Users/john/Desktop/ITESO_headSoccer/football.png").convert_alpha()
+        self.image = pygame.image.load(self.path + "football.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, ((HeadSoccer.BALL_RADIUS + 2) * 3, (HeadSoccer.BALL_RADIUS + 2) * 3)).convert_alpha()
         
-        self.bg_img = pygame.image.load('/Users/john/Desktop/ITESO_headSoccer/Fondo.jpg').convert_alpha()
+        self.bg_img = pygame.image.load(self.path + 'Fondo.jpg').convert_alpha()
         self.bg_img = pygame.transform.scale(self.bg_img, (1000, 600)).convert_alpha()
 
         self.create_boundaries(self.space, HeadSoccer.WIDTH, HeadSoccer.HEIGHT)
@@ -76,7 +85,7 @@ class HeadSoccer:
     def _reproducir_musica(self) -> None:
         ''' Abre el archivo mp3 y lo reproduce '''
         mixer.init()
-        mixer.music.load("/Users/john/Desktop/ITESO_headSoccer/champions.mp3")
+        mixer.music.load(self.path + "champions.mp3")
         mixer.music.set_volume(0.5)
         mixer.music.play()
     

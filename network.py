@@ -1,13 +1,16 @@
 import socket
 import pickle
+import yaml
 
 class Network:
     def __init__(self) -> None:
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "148.201.50.17"  #ITESO
-        self.port = 5555
-        self.addr = (self.server, self.port)
-        self.p = self.connect()
+        with open('config.yml', 'r') as f:
+            config = yaml.safe_load(f)
+            self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server = config['ip']
+            self.port = config['port']
+            self.addr = (self.server, self.port)
+            self.p = self.connect()
     
     def getP(self):
         ''' Obtiene al jugador que se conecto '''
